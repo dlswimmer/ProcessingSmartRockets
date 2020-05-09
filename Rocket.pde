@@ -53,8 +53,13 @@ public class Rocket {
     }
   }
 
-  public boolean ShouldUpdate() {
+  private boolean ShouldUpdate() {
     return this.crashedOn < 0 && this.completedOn < 0;
+  }
+  
+  
+  private boolean AtTarget() {
+    return CollisionDetection.polyCircle(GetVectors(), target.pos.x, target.pos.y, target.r);
   }
 
   public void Update(int counter) {
@@ -74,7 +79,7 @@ public class Rocket {
       this.crashedOn = counter;
     }
 
-    if (GetDistance(target.pos) < target.r - 3) {
+    if (AtTarget()) {
       this.completedOn = counter;
     }
   }
