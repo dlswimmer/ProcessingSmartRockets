@@ -2,7 +2,7 @@ public class Rocket {
   public int h = 15;
   public int w = 5;
   public int x = width / 2;
-  public int y = height - (h / 2);
+  public int y = height - h;
   public PVector pos = new PVector(x, y);
   public PVector vel = new PVector(0, 0);
   public PVector acc = new PVector(0, 0);
@@ -72,10 +72,7 @@ public class Rocket {
       this.trails.remove(0);
     }
 
-    if (this.pos.x < 0 || this.pos.x > width) {
-      this.crashedOn = counter;
-    }
-    if (this.pos.y < 0 || this.pos.y > height) {
+    if (boundary.Impacts(GetVectors())) {
       this.crashedOn = counter;
     }
 

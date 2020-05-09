@@ -11,6 +11,6 @@ public class Target {
     noStroke();
     fill(128, 255, 128);
     ellipseMode(CENTER);
-    ellipse(this.pos.x, this.pos.y, this.r, this.r);
+    ellipse(this.pos.x, this.pos.y, this.r * 2, this.r * 2);
   }
 }

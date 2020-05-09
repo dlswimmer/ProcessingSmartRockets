@@ -1,4 +1,5 @@
 Target target;
+Boundary boundary;
 Rocket[] rockets;
 Obstacle[] obstacles;
 int numRockets = 100;
@@ -8,7 +9,8 @@ int counter;
 
 void setup() {
   size(600, 600);
-  target = new Target(100, 100, 15);
+  target = new Target(100, 100, 10);
+  boundary = new Boundary(0, 0, width, height);
   rockets = new Rocket[numRockets];
   for (int i = 0; i < numRockets; i++) {
     rockets[i] = new Rocket(null);
@@ -17,6 +19,7 @@ void setup() {
   int cnt = 0;
   while (cnt < numObstacles) {
     Obstacle ob = new Obstacle((int)random(0, width), (int)random(0, height * 2 / 3), (int)random(20, 70), (int)random (20, 70), random(PI));
+    // This isn't perfect since if the obstacle fully encases the target, it doesn't register.
     if (!ob.Impacts(target.pos.x, target.pos.y, target.r)) {
        obstacles[cnt] = ob;
        cnt++;
