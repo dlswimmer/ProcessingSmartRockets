@@ -180,7 +180,7 @@ void draw() {
     textSize(16);
     fill(255);
     stroke(0);
-    text("Showing Winners", 5, 16);
+    text("Showing Winners (" + generation + " generations, " + winners.size() + " winning rockets)", 5, 16);
   }
 }
 
