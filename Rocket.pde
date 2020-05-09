@@ -21,19 +21,19 @@ public class Rocket {
     }
   }
 
-  public void ApplyForce(PVector force) {
+  public void applyForce(PVector force) {
     this.acc.add(force);
   }  
 
-  public void ApplyDnaForce(int dnaIndex) {
-    this.acc.add(this.dna.actions[dnaIndex]);
+  public void applyDnaForce(int dnaIndex) {
+    this.applyForce(this.dna.actions[dnaIndex]);
   }
 
-  public double GetDistance(PVector tar) {
+  public double getDistance(PVector tar) {
     return this.completedOn > 0 ? 1 : tar.dist(this.pos);
   }
 
-  public PVector[] GetVectors() {    
+  public PVector[] getVectors() {    
     PVector[] result = new PVector[3];
     float heading = this.vel.heading();
     result[0] = new PVector(-this.w/2, -this.h/2).rotate(heading - PI / 2).add(this.pos);
@@ -43,25 +43,25 @@ public class Rocket {
     return result;
   }
 
-  public void CheckForImpacts(Obstacle[] obstacles, int counter) {
+  public void checkForImpacts(Obstacle[] obstacles, int counter) {
     for (int i = 0; i < obstacles.length; i++) {
-      if (obstacles[i].Impacts(this.GetVectors())) {
+      if (obstacles[i].impacts(this.getVectors())) {
         this.crashedOn = counter;
         return;
       }
     }
   }
 
-  private boolean ShouldUpdate() {
+  public boolean shouldUpdate() {
     return this.crashedOn < 0 && this.completedOn < 0;
   }
   
   
-  private boolean AtTarget() {
-    return CollisionDetection.polyCircle(GetVectors(), target.pos.x, target.pos.y, target.r);
+  private boolean atTarget() {
+    return CollisionDetection.polyCircle(getVectors(), target.pos.x, target.pos.y, target.r);
   }
 
-  public void Update(int counter) {
+  public void update(int counter) {
     this.vel.add(this.acc);
     this.pos.add(this.vel);
     this.acc.mult(0);
@@ -71,19 +71,19 @@ public class Rocket {
     //  this.trails.remove(0);
     //}
 
-    if (boundary.Impacts(GetVectors())) {
+    if (boundary.impacts(getVectors())) {
       this.crashedOn = counter;
     }
 
-    if (AtTarget()) {
+    if (atTarget()) {
       this.completedOn = counter;
     }
   }
 
-  public void Show() {
+  public void show() {
     noStroke();
     fill(255);
-    PVector[] vectors = GetVectors();
+    PVector[] vectors = getVectors();
     beginShape();
     for (int i = 0; i < vectors.length; i++) {
       vertex(vectors[i].x, vectors[i].y);

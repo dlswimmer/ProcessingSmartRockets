@@ -12,7 +12,7 @@ public class Obstacle {
   }
   
   
-  public PVector[] GetVectors() {
+  public PVector[] getVectors() {
     PVector[] result = new PVector[4];
     result[0] = new PVector(this.w/2, -this.h/2).rotate(this.rot).add(this.pos);
     result[1] = new PVector(this.w/2, this.h/2).rotate(this.rot).add(this.pos);
@@ -22,15 +22,15 @@ public class Obstacle {
     return result;
   }
 
-  public boolean Impacts(PVector[] vectors) {
-    return CollisionDetection.polyPoly(GetVectors(), vectors);
+  public boolean impacts(PVector[] vectors) {
+    return CollisionDetection.polyPoly(getVectors(), vectors);
   }
 
-  public boolean Impacts(float x, float y, float r) {
-    return CollisionDetection.polyCircle(GetVectors(), x, y, r);
+  public boolean impacts(float x, float y, float r) {
+    return CollisionDetection.polyCircle(getVectors(), x, y, r);
   }
 
-  public void Show() {
+  public void show() {
     stroke(255, 0, 0);
     fill(128);
     pushMatrix();

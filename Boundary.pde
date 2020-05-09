@@ -12,7 +12,7 @@ public class Boundary {
   }
   
   
-  public boolean Impacts(PVector[] vectors) {
+  public boolean impacts(PVector[] vectors) {
     return CollisionDetection.polyLine(vectors, x1, y1, x2, y1)
       || CollisionDetection.polyLine(vectors, x2, y1, x2, y2)
       || CollisionDetection.polyLine(vectors, x1, y2, x2, y2)

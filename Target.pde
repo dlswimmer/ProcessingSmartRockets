@@ -7,7 +7,7 @@ public class Target {
     this.r = r;
   }
   
-  public void Show() {
+  public void show() {
     noStroke();
     fill(128, 255, 128);
     ellipseMode(CENTER);

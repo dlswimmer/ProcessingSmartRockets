@@ -26,7 +26,7 @@ void setup() {
   while (cnt < numObstacles) {
     Obstacle ob = new Obstacle((int)random(0, width), (int)random(0, height * 2 / 3), (int)random(20, 70), (int)random (20, 70), random(PI));
     // This isn't perfect since if the obstacle fully encases the target, it doesn't register.
-    if (!ob.Impacts(target.pos.x, target.pos.y, target.r)) {
+    if (!ob.impacts(target.pos.x, target.pos.y, target.r)) {
       obstacles[cnt] = ob;
       cnt++;
     }
@@ -36,7 +36,7 @@ void setup() {
 double evaluate() {
   double highScore = 0;
   for (int i = 0; i < numRockets; i++) {
-    double dist = rockets[i].GetDistance(target.pos);
+    double dist = rockets[i].getDistance(target.pos);
     rockets[i].distance = dist;
     double score = (1.0 / dist) * lifespan * 10;
     if (rockets[i].crashedOn < 0) {
@@ -122,7 +122,7 @@ void resetRockets() {
 
 void draw() {
   background(0); 
-  target.Show();
+  target.show();
 
   boolean anyUpdated = false;
   if (!showOnlyWinners) {
@@ -130,16 +130,16 @@ void draw() {
       counter = 0;
       rebirth(evaluate());
     }
-
+  
     for (int i = 0; i < numRockets; i++) {
       Rocket rocket = rockets[i];
-      if (rocket.ShouldUpdate()) {
+      if (rocket.shouldUpdate()) {
         anyUpdated = true;
-        rocket.ApplyDnaForce(counter);
-        rocket.Update(counter);
-        rocket.CheckForImpacts(obstacles, counter);
+        rocket.applyDnaForce(counter);
+        rocket.update(counter);
+        rocket.checkForImpacts(obstacles, counter);
       }
-      rocket.Show();
+      rocket.show();
     }
 
     textSize(16);
@@ -154,18 +154,18 @@ void draw() {
 
     for (int i = 0; i < winners.size(); i++) {
       Rocket rocket = winners.get(i);
-      if (rocket.ShouldUpdate()) {
+      if (rocket.shouldUpdate()) {
         anyUpdated = true;
-        rocket.ApplyDnaForce(counter);
-        rocket.Update(counter);
-        rocket.CheckForImpacts(obstacles, counter);
+        rocket.applyDnaForce(counter);
+        rocket.update(counter);
+        rocket.checkForImpacts(obstacles, counter);
       }
-      rocket.Show();
+      rocket.show();
     }
   }
 
   for (int i = 0; i < numObstacles; i++) {
-    obstacles[i].Show();
+    obstacles[i].show();
   }
 
   counter++;
