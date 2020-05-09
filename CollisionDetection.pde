@@ -1,3 +1,5 @@
+// Credits to: http://www.jeffreythompson.org/collision-detection/table_of_contents.php
+
 public static class CollisionDetection {
 
 
