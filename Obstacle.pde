@@ -31,7 +31,7 @@ public class Obstacle {
   }
 
   public void show() {
-    stroke(255, 0, 0);
+    noStroke();
     fill(128);
     pushMatrix();
     translate(this.pos.x, this.pos.y);

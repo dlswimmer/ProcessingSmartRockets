@@ -3,7 +3,7 @@ Boundary boundary;
 Rocket[] rockets;
 Obstacle[] obstacles;
 int numRockets = 100;
-int numObstacles = 30;
+int numObstacles = 100;
 int lifespan = 600;
 int counter;
 int generation = 0;
@@ -24,7 +24,7 @@ void setup() {
   obstacles = new Obstacle[numObstacles];
   int cnt = 0;
   while (cnt < numObstacles) {
-    Obstacle ob = new Obstacle((int)random(0, width), (int)random(0, height * 2 / 3), (int)random(20, 70), (int)random (20, 70), random(PI));
+    Obstacle ob = new Obstacle((int)random(0, width), (int)random(0, height * 2 / 3), (int)random(10, 30), (int)random (10, 30), random(PI));
     // This isn't perfect since if the obstacle fully encases the target, it doesn't register.
     if (!ob.impacts(target.pos.x, target.pos.y, target.r)) {
       obstacles[cnt] = ob;
