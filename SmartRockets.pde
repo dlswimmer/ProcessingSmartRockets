@@ -7,6 +7,9 @@ int numObstacles = 30;
 int lifespan = 800;
 int counter;
 int generation = 0;
+double bestHighScore = 0;
+ArrayList<Rocket> winners = new ArrayList<Rocket>();
+boolean showOnlyWinners = false;
 
 void setup() {
   size(600, 600);
@@ -22,8 +25,8 @@ void setup() {
     Obstacle ob = new Obstacle((int)random(0, width), (int)random(0, height * 2 / 3), (int)random(20, 70), (int)random (20, 70), random(PI));
     // This isn't perfect since if the obstacle fully encases the target, it doesn't register.
     if (!ob.Impacts(target.pos.x, target.pos.y, target.r)) {
-       obstacles[cnt] = ob;
-       cnt++;
+      obstacles[cnt] = ob;
+      cnt++;
     }
   }
 }
@@ -56,13 +59,17 @@ void rebirth(double highScore) {
   for (int i = 0; i < numRockets; i++) {
     if (rockets[i].score == highScore && winner == null) {
       winner = rockets[i];
+      if (highScore > bestHighScore) {
+        winners.add(winner);
+        bestHighScore = highScore;
+      }
     }
     double poolCount = (rockets[i].score / highScore) * 50;
     for (int j = 0; j < poolCount; j++) {
       pool.add(rockets[i]);
     }
   }
-  
+
   int deviants = (int)(numRockets * 0.05);
 
   for (int i = 0; i < numRockets - 1 - deviants; i++) {
@@ -81,46 +88,79 @@ void rebirth(double highScore) {
     rockets[i] = new Rocket(childDna);
     mutate(rockets[i]);
   }
-  
+
   for (int i = 0; i < deviants; i++) {
     rockets[i+numRockets-1-deviants] = new Rocket(null);
   }
   rockets[numRockets - 1] = new Rocket(winner.dna);
-  
+
   print((int)highScore);
   println(" (distance: " + (int)winner.distance + " completed on: " + winner.completedOn + ", crashed on: " + winner.crashedOn + ")");
   generation++;
 }
 
 void mutate(Rocket rocket) {
-    for (int j = 0; j < lifespan; j++) {
-      if (random(1) < .01) {
-        rocket.dna.actions[j] = PVector.random2D().mult(0.1);
-      }
+  for (int j = 0; j < lifespan; j++) {
+    if (random(1) < .01) {
+      rocket.dna.actions[j] = PVector.random2D().mult(0.1);
+    }
+  }
+}
+
+void resetWinners() {  
+    for (int i = 0; i < winners.size(); i++) {
+      winners.set(i, new Rocket(winners.get(i).dna));
+    }
+}
+void resetRockets() {  
+    for (int i = 0; i < numRockets; i++) {
+      rockets[i] = new Rocket(rockets[i].dna);
     }
 }
 
 void draw() {
   background(0); 
   target.Show();
-  
-
-  if (counter >= lifespan) {
-    counter = 0;
-    rebirth(evaluate());
-  }
 
   boolean anyUpdated = false;
-  for (int i = 0; i < numRockets; i++) {
-    if (rockets[i].ShouldUpdate()) {
-      anyUpdated = true;
-      rockets[i].ApplyDnaForce(counter);
-      rockets[i].Update(counter);
-      rockets[i].CheckForImpacts(obstacles, counter);
+  if (!showOnlyWinners) {
+    if (counter >= lifespan) {
+      counter = 0;
+      rebirth(evaluate());
     }
-    rockets[i].Show();
-  }
 
+    for (int i = 0; i < numRockets; i++) {
+      Rocket rocket = rockets[i];
+      if (rocket.ShouldUpdate()) {
+        anyUpdated = true;
+        rocket.ApplyDnaForce(counter);
+        rocket.Update(counter);
+        rocket.CheckForImpacts(obstacles, counter);
+      }
+      rocket.Show();
+    }
+
+    textSize(16);
+    fill(255);
+    stroke(0);
+    text("Generation: " + generation, 5, 16);
+  } else {    
+    if (counter >= lifespan) {
+      counter = 0;
+      resetWinners();
+    }
+
+    for (int i = 0; i < winners.size(); i++) {
+      Rocket rocket = winners.get(i);
+      if (rocket.ShouldUpdate()) {
+        anyUpdated = true;
+        rocket.ApplyDnaForce(counter);
+        rocket.Update(counter);
+        rocket.CheckForImpacts(obstacles, counter);
+      }
+      rocket.Show();
+    }
+  }
 
   for (int i = 0; i < numObstacles; i++) {
     obstacles[i].Show();
@@ -130,9 +170,28 @@ void draw() {
   if (!anyUpdated) {
     counter = lifespan;
   }
-  
-  textSize(16);
-  fill(255);
-  stroke(0);
-  text("Generation: " + generation, 5, 16);
+
+  if (!showOnlyWinners) {
+    textSize(16);
+    fill(255);
+    stroke(0);
+    text("Generation: " + generation, 5, 16);
+  } else {
+    textSize(16);
+    fill(255);
+    stroke(0);
+    text("Showing Winners", 5, 16);
+  }
+}
+
+void keyPressed() {
+  if (keyCode == 32) {
+    counter = 0;
+    showOnlyWinners = !showOnlyWinners;
+    if (showOnlyWinners) {
+      resetWinners();
+    } else {      
+      resetRockets();
+    }
+  }
 }
