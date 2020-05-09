@@ -6,6 +6,7 @@ int numRockets = 100;
 int numObstacles = 30;
 int lifespan = 800;
 int counter;
+int generation = 0;
 
 void setup() {
   size(600, 600);
@@ -88,6 +89,7 @@ void rebirth(double highScore) {
   
   print((int)highScore);
   println(" (distance: " + (int)winner.distance + " completed on: " + winner.completedOn + ", crashed on: " + winner.crashedOn + ")");
+  generation++;
 }
 
 void mutate(Rocket rocket) {
@@ -101,6 +103,7 @@ void mutate(Rocket rocket) {
 void draw() {
   background(0); 
   target.Show();
+  
 
   if (counter >= lifespan) {
     counter = 0;
@@ -127,4 +130,9 @@ void draw() {
   if (!anyUpdated) {
     counter = lifespan;
   }
+  
+  textSize(16);
+  fill(255);
+  stroke(0);
+  text("Generation: " + generation, 5, 16);
 }
