@@ -4,12 +4,14 @@ Rocket[] rockets;
 Obstacle[] obstacles;
 int numRockets = 100;
 int numObstacles = 30;
-int lifespan = 800;
+int lifespan = 600;
 int counter;
 int generation = 0;
 double bestHighScore = 0;
 ArrayList<Rocket> winners = new ArrayList<Rocket>();
 boolean showOnlyWinners = false;
+float velocityMultiplier = 0.2;
+float velocityLimit = 10;
 
 void setup() {
   size(600, 600);
@@ -102,7 +104,7 @@ void rebirth(double highScore) {
 void mutate(Rocket rocket) {
   for (int j = 0; j < lifespan; j++) {
     if (random(1) < .01) {
-      rocket.dna.actions[j] = PVector.random2D().mult(0.1);
+      rocket.dna.actions[j] = PVector.random2D().mult(velocityMultiplier);
     }
   }
 }

@@ -3,7 +3,7 @@ public class Dna {
   
   public Dna() {
     for (int i = 0; i < lifespan; i++) {
-      actions[i] = PVector.random2D().mult(0.1);
+      actions[i] = PVector.random2D().mult(velocityMultiplier);
     }
   }
 }

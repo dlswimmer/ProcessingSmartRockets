@@ -11,8 +11,7 @@ public class Rocket {
   public int completedOn = -1;
   public double score = 0;
   public double distance = -1;
-  public int velocityLimit = 8;
-  private ArrayList<PVector> trails = new ArrayList<PVector>();
+  //private ArrayList<PVector> trails = new ArrayList<PVector>();
 
   public Rocket(Dna seedDna) {
     if (seedDna == null) {      
@@ -34,7 +33,7 @@ public class Rocket {
     return this.completedOn > 0 ? 1 : tar.dist(this.pos);
   }
 
-  public PVector[] GetVectors() {
+  public PVector[] GetVectors() {    
     PVector[] result = new PVector[3];
     float heading = this.vel.heading();
     result[0] = new PVector(-this.w/2, -this.h/2).rotate(heading - PI / 2).add(this.pos);
@@ -67,10 +66,10 @@ public class Rocket {
     this.pos.add(this.vel);
     this.acc.mult(0);
     this.vel.limit(velocityLimit);
-    this.trails.add(new PVector(this.pos.x, this.pos.y));
-    if (this.trails.size() > 80) {
-      this.trails.remove(0);
-    }
+    //this.trails.add(new PVector(this.pos.x, this.pos.y));
+    //if (this.trails.size() > 80) {
+    //  this.trails.remove(0);
+    //}
 
     if (boundary.Impacts(GetVectors())) {
       this.crashedOn = counter;
